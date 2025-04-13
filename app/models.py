@@ -2,9 +2,11 @@
 from . import db
 from datetime import datetime,timezone
 
-class Movie(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(128))
-    description = db.Column(db.Text)
-    poster = db.Column(db.String(128))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+class movie(db.Model):
+    __tablename__ = 'movies'
+
+    id= db.Column(db.Integer, primary_key = True)
+    movietitle= db.Column(db.String(150))
+    description = db.Column(db.String(250))
+    poster= db.Column(db.String(300))
+    created_at= db.Column(db.DateTime, default=datetime.now(timezone.utc))
