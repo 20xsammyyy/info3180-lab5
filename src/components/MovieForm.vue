@@ -1,6 +1,6 @@
 <template>
     <div class="movie-form-wrapper container mt-5 mb-5">
-      <h2 class="mb-4 text-primary">Add a Favorite Movie</h2>
+      <h2 class="mb-4 text-primary">Add a Favourite Movie</h2>
   
       <form
         id="movieForm"
@@ -130,3 +130,25 @@ onMounted(() => {
     getCsrfToken();
 });
 </script>
+
+<style scoped>
+.movie-form-wrapper {
+  max-width: 600px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.alert-success {
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border-color: #badbcc;
+}
+
+.alert-danger {
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+}
+</style>

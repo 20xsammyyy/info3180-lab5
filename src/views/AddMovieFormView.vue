@@ -1,13 +1,9 @@
-<script setup>
-import movieForm from '../components/MovieForm.vue';
-</script>
 <template>
-    <div>
-        
-        <h1>Add a new Movie</h1>
-        <movieForm />
-    
-    
-    </div>
-    
-</template>
+    <main>
+      <MovieForm />
+    </main>
+  </template>
+  
+  <script setup>
+  import MovieForm from "../components/MovieForm.vue";
+  </script>

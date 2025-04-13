@@ -1,32 +1,17 @@
-"""
-Flask Documentation:     https://flask.palletsprojects.com/
-Jinja2 Documentation:    https://jinja.palletsprojects.com/
-Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
-This file creates your application.
-"""
-
-from app import app,db
-from flask import render_template, request, jsonify, send_file
 import os
+from app import app, db
+from flask import render_template, request, jsonify, send_file
 from .forms import MovieForm
-from .models import movie
+from .models import Movie
 from flask_wtf.csrf import generate_csrf
 from werkzeug.utils import secure_filename
 
-
-
-###
 # Routing for your application.
-###
-
 @app.route('/')
 def index():
     return jsonify(message="This is the beginning of our API")
 
-
-###
 # The functions below should be applicable to all Flask apps.
-###
 @app.route('/api/v1/movies', methods=['POST'])
 def movies():
     form = MovieForm()
@@ -36,10 +21,14 @@ def movies():
         description = form.description.data
         poster = form.poster.data
 
+        # Ensure the upload folder exists
+        if not os.path.exists(app.config['UPLOAD_FOLDER']):
+            os.makedirs(app.config['UPLOAD_FOLDER'])
+
         filename = secure_filename(poster.filename)
         poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        new_movie = movie(title=title, description=description, poster=filename)
+        new_movie = Movie(title=title, description=description, poster=filename)
         db.session.add(new_movie)
         db.session.commit()
 
@@ -54,7 +43,7 @@ def movies():
 
 @app.route('/api/v1/movies', methods=['GET'])
 def get_movies():
-    movies = movie.query.all()
+    movies = Movie.query.all()
     movie_list = []
 
     for movie in movies:
@@ -95,7 +84,6 @@ def send_text_file(file_name):
     """Send your static text file."""
     file_dot_text = file_name + '.txt'
     return app.send_static_file(file_dot_text)
-
 
 @app.after_request
 def add_header(response):
