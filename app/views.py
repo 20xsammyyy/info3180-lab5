@@ -27,34 +27,45 @@ def index():
 ###
 # The functions below should be applicable to all Flask apps.
 ###
-@app.route('/api/v1/movies', methods=["POST"])
+@app.route('/api/v1/movies', methods=['POST'])
 def movies():
-    form =MovieForm()
-    if form.validate_on_submit():
-        title=request.form['title']
-        description= request.form['description']
-        poster= request.form['poster']
-        postername= secure_filename(poster.postername)
-        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], movies))
+    form = MovieForm()
 
-        newMovie= movie(title, description, postername)
-        db.session.add(newMovie)
+    if form.validate_on_submit():
+        title = form.title.data
+        description = form.description.data
+        poster = form.poster.data
+
+        filename = secure_filename(poster.filename)
+        poster.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        new_movie = movie(title=title, description=description, poster=filename)
+        db.session.add(new_movie)
         db.session.commit()
 
-        response=jsonify ({
-            'message': 'Movie successfully added',
-            'title': newMovie.title,
-            'poster': postername,
-            'description': newMovie.description
-        })
-        response.status_code= 201
-        return response
+        return jsonify({
+            "message": "Movie successfully added",
+            "title": title,
+            "poster": filename,
+            "description": description
+        }), 201
     else:
-        response = jsonify({'errors': form_errors(form)})
-        response.status_code=400
-        return response
+        return jsonify({"errors": form_errors(form)}), 400
 
+@app.route('/api/v1/movies', methods=['GET'])
+def get_movies():
+    movies = movie.query.all()
+    movie_list = []
 
+    for movie in movies:
+        movie_list.append({
+            "id": movie.id,
+            "title": movie.title,
+            "description": movie.description,
+            "poster": f"/api/v1/posters/{movie.poster}"
+        })
+
+    return jsonify({"movies": movie_list})
 
 
 # Here we define a function to collect form errors from Flask-WTF

@@ -15,12 +15,29 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <RouterLink to="/" class="nav-link active">Home</RouterLink>
+              <RouterLink to="/" class="nav-link" active-class="active"
+                >Home</RouterLink
+              >
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/about">About</RouterLink>
+              <RouterLink to="/about" class="nav-link" active-class="active"
+                >About</RouterLink
+              >
+            </li>
+            <li class="nav-item">
+              <RouterLink
+                to="/movies/create"
+                class="nav-link"
+                active-class="active"
+                >Add Movie</RouterLink
+              >
+            </li>
+            <li class="nav-item">
+              <RouterLink to="/movies" class="nav-link" active-class="active"
+                >View Movies</RouterLink
+              >
             </li>
           </ul>
         </div>
@@ -34,5 +51,5 @@ import { RouterLink } from "vue-router";
 </script>
 
 <style>
-/* Add any component specific styles here */
+/* You can style the active nav item here if you want */
 </style>
